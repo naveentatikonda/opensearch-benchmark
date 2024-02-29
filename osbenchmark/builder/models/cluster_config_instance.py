@@ -6,7 +6,7 @@ from osbenchmark.builder.models.cluster_infra_providers import ClusterInfraProvi
 
 
 @dataclass
-class ProvisionConfigInstance:
+class ClusterConfig:
     ENTRY_POINT = "config"
 
     """
@@ -32,7 +32,7 @@ class ProvisionConfigInstance:
 
     @staticmethod
     def get_entry_point():
-        return ProvisionConfigInstance.ENTRY_POINT
+        return ClusterConfig.ENTRY_POINT
 
     @property
     def name(self):

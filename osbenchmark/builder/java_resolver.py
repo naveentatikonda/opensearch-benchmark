@@ -47,7 +47,7 @@ def java_home(cluster_config_runtime_jdks, specified_runtime_jdk=None, provides_
 
     except ValueError:
         raise exceptions.SystemSetupError(
-            "ProvisionConfigInstance config key \"runtime.jdk\" is invalid: \"{}\" (must be int)".format(
+            "ClusterConfig config key \"runtime.jdk\" is invalid: \"{}\" (must be int)".format(
                 cluster_config_runtime_jdks))
 
     runtime_jdk_versions = determine_runtime_jdks()
@@ -66,7 +66,7 @@ def java_home(cluster_config_runtime_jdks, specified_runtime_jdk=None, provides_
             logger.info("Using JDK set from JAVA_HOME because OS is MacOS (Darwin).")
             logger.info("NOTICE: OpenSearch doesn't provide release artifacts for MacOS (Darwin) currently."
             " Please set JAVA_HOME to JDK 11 or JDK 8 and set the runtime.jdk.bundled to true in config.ini "
-            "in opensearch-benchmark-provisionconfigs directory")
+            "in opensearch-benchmark cluster_configs directory")
             return detect_jdk(allowed_runtime_jdks)
 
         # assume that the bundled JDK is the highest available; the path is irrelevant

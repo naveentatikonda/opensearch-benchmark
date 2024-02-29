@@ -37,7 +37,7 @@ from osbenchmark import PROGRAM_NAME, BANNER, FORUM_LINK, SKULL, check_python_ve
 from osbenchmark import version, actor, config, paths, \
     test_execution_orchestrator, results_publisher, \
         metrics, workload, exceptions, log
-from osbenchmark.builder import provision_config, builder
+from osbenchmark.builder import cluster_config, builder
 from osbenchmark.workload_generator import workload_generator
 from osbenchmark.utils import io, convert, process, console, net, opts, versions
 
@@ -606,9 +606,9 @@ def dispatch_list(cfg):
     elif what == "test_executions":
         metrics.list_test_executions(cfg)
     elif what == "cluster-configs":
-        provision_config.list_cluster_configs(cfg)
+        cluster_config.list_cluster_configs(cfg)
     elif what == "opensearch-plugins":
-        provision_config.list_plugins(cfg)
+        cluster_config.list_plugins(cfg)
     else:
         raise exceptions.SystemSetupError("Cannot list unknown configuration option [%s]" % what)
 

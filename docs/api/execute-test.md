@@ -74,7 +74,7 @@ Argument | Description | Required
 `workload-params` | Define a comma-separated list of key:value pairs that are injected verbatim to the workload as variables. | No
 `test-procedure` | Define the test_procedure to use. List possible test_procedures for workloads with `opensearch-benchmark list workloads`. | No
 `cluster-config` | Define the cluster-config to use. List possible cluster-configs with `opensearch-benchmark list cluster-configs` (default: `defaults`). | No
-`provision-config-instance-params` | Define a comma-separated list of key:value pairs that are injected verbatim as variables for the cluster-config. | No
+`cluster-config-params` | Define a comma-separated list of key:value pairs that are injected verbatim as variables for the cluster-config. | No
 `runtime-jdk` | The major version of the runtime JDK to use. | No
 `opensearch-plugins` | Define the OpenSearch plugins to install. (default: install no plugins). | No
 `plugin-params` | Define a comma-separated list of key:value pairs that are injected verbatim to all plugins as variables. | No

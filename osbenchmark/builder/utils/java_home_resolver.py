@@ -17,7 +17,7 @@ class JavaHomeResolver:
         try:
             allowed_runtime_jdks = [int(v) for v in runtime_jdks.split(",")]
         except ValueError:
-            raise SystemSetupError(f"ProvisionConfigInstance variable key \"runtime.jdk\" is invalid: \"{runtime_jdks}\" (must be int)")
+            raise SystemSetupError(f"ClusterConfig variable key \"runtime.jdk\" is invalid: \"{runtime_jdks}\" (must be int)")
 
         if is_runtime_jdk_bundled:
             return self._handle_bundled_jdk(host, allowed_runtime_jdks)
@@ -36,7 +36,7 @@ class JavaHomeResolver:
             self.logger.info(
                 "NOTICE: OpenSearch doesn't provide jdk bundled release artifacts for MacOS (Darwin) currently. "
                 "Please set JAVA_HOME to JDK 11 or JDK 8 and set the runtime.jdk.bundled to true in the specified "
-                "provision config instance file")
+                "cluster config instance file")
             return self._detect_jdk(host, allowed_runtime_jdks)
 
         # assume that the bundled JDK is the highest available; the path is irrelevant
