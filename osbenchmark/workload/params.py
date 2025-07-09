@@ -40,7 +40,7 @@ import numpy as np
 from osbenchmark import exceptions
 from osbenchmark.utils import io
 from osbenchmark.utils.dataset import DataSet, get_data_set, Context
-from osbenchmark.utils.parse import parse_string_parameter, parse_int_parameter
+from osbenchmark.utils.parse import parse_string_parameter, parse_int_parameter, parse_bool_parameter
 from osbenchmark.workload import workload
 from osbenchmark.workload import loader
 
@@ -921,6 +921,8 @@ class VectorDataSetPartitionParamSource(ParamSource):
         self.offset = 0
         self.data_set: DataSet = None
         self.corpora = self.extract_corpora(self.data_set_corpus, self.data_set_format)
+        self.bulk_action_type = parse_string_parameter("bulk_action_type", params, "index")
+        self.doc_as_upsert = parse_bool_parameter("doc_as_upsert", params, False)
 
     def _get_corpora_file_paths(self, name, source_format):
         document_files = []
@@ -1340,7 +1342,12 @@ class BulkVectorsFromDataSetParamSource(VectorDataSetPartitionParamSource):
                     row.update({attribute_name : attribute})
             if add_id_field_to_body:
                 row.update({self.id_field_name: identifier})
-            bulk_contents.append(row)
+            if self.bulk_action_type == "update":
+                update_row = {"doc": row, "doc_as_upsert": self.doc_as_upsert}
+            else:
+                update_row = row
+                # row.update({"doc": {self.field_name: vec}})
+            bulk_contents.append(update_row)
 
         actions[1::2] = bulk_contents
         return actions
@@ -1365,7 +1372,11 @@ class BulkVectorsFromDataSetParamSource(VectorDataSetPartitionParamSource):
             row = {self.field_name: vec}
             if add_id_field_to_body:
                 row.update({self.id_field_name: identifier})
-            bulk_contents.append(row)
+            if self.bulk_action_type == "update":
+                update_row = {"doc": row, "doc_as_upsert": self.doc_as_upsert}
+            else:
+                update_row = row
+            bulk_contents.append(update_row)
 
         actions[1::2] = bulk_contents
         return actions
@@ -1454,7 +1465,8 @@ class BulkVectorsFromDataSetParamSource(VectorDataSetPartitionParamSource):
 
         def action(id_field_name, doc_id):
             # support only index operation
-            bulk_action = "index"
+            # bulk_action = "index"
+            bulk_action = self.bulk_action_type
             metadata = {"_index": self.index_name}
             # Add id field to metadata only if it is _id
             if id_field_name == self.DEFAULT_ID_FIELD_NAME:
